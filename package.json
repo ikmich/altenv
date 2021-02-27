@@ -1,0 +1,43 @@
+{
+  "name": "altenv",
+  "version": "0.0.1-alpha",
+  "description": "Alternate your env vars according to preferred target runtime environment",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "rm -rf lib && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "depl": "cross-env NODE_ENV=development npm uninstall -g altenv && yarn build && npm install -g",
+    "prepublishOnly": "yarn build"
+  },
+  "author": "Ikenna Agbasimalo <michfx@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/fs-extra": "^9.0.7",
+    "cliyargs": "^0.0.3-alpha",
+    "fs-extra": "^9.1.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  },
+  "bin": {
+    "altenv": "lib/index.js"
+  },
+  "bugs": {
+    "email": "michfx@gmail.com",
+    "url": "https://github.com/ikmich/altenv/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ikmich/altenv"
+  },
+  "maintainers": [
+    "Ikenna Agbasimalo <michfx@gmail.com>"
+  ],
+  "prettier": {
+    "printWidth": 120,
+    "semi": true,
+    "trailingComma": "none",
+    "singleQuote": true,
+    "tabWidth": 2
+  }
+}
