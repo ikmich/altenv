@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { conprint } from 'cliyargs/lib/utils';
-import { cliyargs } from 'cliyargs';
+import { cliyargs, ICommandInfo } from 'cliyargs';
 import { InitCommand } from './InitCommand';
 import { UseCommand } from './UseCommand';
 
@@ -19,7 +19,7 @@ const argv = cliyargs.yargs
   .command('use', 'Apply the specified env transformer')
   .help().argv;
 
-const commandInfo = cliyargs.parseArgv(argv);
+const commandInfo: ICommandInfo = cliyargs.parseArgv(argv);
 
 cliyargs
   .processCommand(commandInfo, async (commandName) => {
