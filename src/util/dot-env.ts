@@ -31,8 +31,17 @@ export const dotEnv = {
     if (contents) {
       let lines: string[] = contents.split(/\n|\r|\r\n/);
       if (Array.isArray(lines)) {
-        lines.forEach((line) => {
-          let [k, v] = line.split(/\s*=\s*/);
+        for (let line of lines) {
+          const matches = line.match(/(\w+)=(.*)/);
+          // console.log({matches});
+          if (!matches || !matches[1]) {
+            // No key, so ignore that line.
+            continue;
+          }
+
+          let k = matches[1];
+          let v = matches[2] ?? '';
+
           if (k && k.length > 0) {
             let isNumber = false;
             let isBoolean = false;
@@ -49,7 +58,10 @@ export const dotEnv = {
                 }
               }
 
-              // Remove the quotes, since value is going into a js object literal, which assigns a string by default.
+              /*
+               Remove the quotes, since value is going into a js object literal, which assigns a string to
+               the value by default.
+               */
               v = v.replace(/^['"]/, '').replace(/['"]$/, '');
 
               if (isNumber) {
@@ -63,9 +75,10 @@ export const dotEnv = {
 
             result[k] = val;
           }
-        });
+        }
       }
     }
+
     return result;
   }
 };

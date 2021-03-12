@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { conprint } from 'cliyargs/lib/utils';
 import { cliyargs, ICommandInfo } from 'cliyargs';
 import { InitCommand } from './InitCommand';
 import { UseCommand } from './UseCommand';
@@ -34,7 +33,4 @@ cliyargs
       // No command. Check options
       // Todo - Show altenv version
     }
-  })
-  .catch((e) => {
-    console.error(e);
   });

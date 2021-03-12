@@ -1,7 +1,8 @@
 import { BaseCmd } from 'cliyargs/lib/BaseCmd';
 import { dotEnv } from './util/dot-env';
 import { generateTransformerFile } from './helpers/generateTransformerFile';
-import { askInput, conprint, isYesInput } from 'cliyargs/lib/utils';
+import { conprint, isYesInput } from 'cliyargs/lib/utils';
+import { cliyargs } from 'cliyargs';
 
 export class InitCommand extends BaseCmd {
   async run(): Promise<void> {
@@ -14,14 +15,17 @@ export class InitCommand extends BaseCmd {
 
     let filePath = dotEnv.getFilePath();
     if (filePath && filePath.length > 0) {
-      const input = await askInput(
-        'ask_replace_file_exists',
+      const input = await cliyargs.askInput(
+        'ask_replace_dotenv',
         `${filePath} already exists. Would you like to replace it? (y/n)`
       );
       if (!isYesInput(input)) {
         conprint.notice('Ignoring...');
         return;
       }
+    } else {
+      // If no .env file, create it.
+      dotEnv.createDotEnv();
     }
 
     const envInit = dotEnv.parse();
@@ -30,6 +34,6 @@ export class InitCommand extends BaseCmd {
       conprint.success(`${filePath} created`);
     }
 
-    console.log(envInit);
+    //console.log(envInit);
   }
 }
