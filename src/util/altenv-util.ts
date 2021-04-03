@@ -1,6 +1,9 @@
 import { Fs, Path } from '../deps';
 import { fileUtil } from './file-util';
-import { ALTENV_FILENAME } from '../index';
+import { ALTENV_FILENAME, AltenvConfig } from '../index';
+import { defaultConfig } from './index';
+import { dotEnv } from './dot-env';
+import { conprint } from 'cliyargs/lib/utils';
 
 export const altenvUtil = {
   getFilePath(): string | null {
@@ -14,11 +17,51 @@ export const altenvUtil = {
     return null;
   },
 
-  getObject() {
+  getConfig(): AltenvConfig {
     const filepath = this.getFilePath();
     if (filepath) {
-      return require(filepath);
+      return <AltenvConfig>require(filepath);
     }
-    return null;
+    return defaultConfig;
+  },
+
+  hasAltenvFile(): boolean {
+    const filePath = this.getFilePath() ?? '';
+    return !!filePath && filePath.length > 0;
+  },
+
+  writeToEnv(target: string) {
+    const config = this.getConfig();
+
+    let env = Object.assign({}, config.defaultEnv);
+    const keys = Object.keys(config.transformers);
+    if (target && keys.includes(target)) {
+      env = config.transformers[target](env);
+    }
+
+    // Write env file
+    try {
+      let envOutput = '';
+      Object.keys(env).forEach((k) => {
+        const v = env[k];
+        if (typeof v === 'string') {
+          envOutput += `${k}="${v}"\n`;
+        } else {
+          envOutput += `${k}=${v}\n`;
+        }
+      });
+
+      const filepath = dotEnv.getFilePath();
+      if (!filepath) {
+        dotEnv.createDotEnv();
+      }
+
+      Fs.writeFileSync(filepath!, envOutput, 'utf-8');
+
+      conprint.success(`.env has been updated for target '${target}'`);
+    } catch (e) {
+      conprint.error('Error writing env file');
+      console.error(e);
+    }
   }
 };

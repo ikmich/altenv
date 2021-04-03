@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import { cliyargs, ICommandInfo } from 'cliyargs';
 import { InitCommand } from './InitCommand';
 import { UseCommand } from './UseCommand';
+import { cliyargs, IClyCommandInfo, IClyCommandOpts } from '../../cliyargs';
 
 export const ALTENV_FILENAME = 'altenv.js';
 
@@ -11,26 +11,42 @@ export type TResult = {
   data?: any;
 };
 
+export interface IEnv {
+  [k: string]: any;
+}
+
+export interface AltenvConfig {
+  defaultEnv: IEnv;
+  transformers: { [k: string]: (env: IEnv) => IEnv };
+}
+
+export interface IOptions extends IClyCommandOpts {
+  print: boolean;
+}
+
 // ----
 
 const argv = cliyargs.yargs
   .command('init', 'Create config file')
   .command('use', 'Apply the specified env transformer')
+  .option('print', {
+    alias: 'p',
+    type: 'boolean',
+    description: 'Print generated env output'
+  })
   .help().argv;
 
-const commandInfo: ICommandInfo = cliyargs.parseArgv(argv);
+const commandInfo: IClyCommandInfo<IOptions> = cliyargs.parseYargv(argv);
 
-cliyargs
-  .processCommand(commandInfo, async (commandName) => {
-    switch (commandName) {
-      case 'init':
-        await new InitCommand(commandInfo).run();
-        break;
-      case 'use':
-        await new UseCommand(commandInfo).run();
-        break;
-      default:
-      // No command. Check options
-      // Todo - Show altenv version
-    }
-  });
+cliyargs.processCommand(commandInfo, async (commandName: string) => {
+  switch (commandName) {
+    case 'init':
+      await new InitCommand(commandInfo).run();
+      break;
+    case 'use':
+      await new UseCommand(commandInfo).run();
+      break;
+    default:
+    // No command. Check options
+  }
+});

@@ -14,12 +14,16 @@ export function generateTransformerFile(envInit?: { [k: string]: any }): TResult
 
     const defaultEnvStr = _fn(() => {
       if (envInit) {
-        return JSON.stringify(envInit, null, 2);
+        return JSON.stringify(envInit, null, 4);
       }
       return '{}';
     });
 
-    let contents = `module.exports = {
+    let contents = `
+/**
+ * [altenv config]{@link https://github.com/ikmich/altenv}
+ */
+var altenvConfig = {
   defaultEnv: ${defaultEnvStr},
   
   /**
@@ -41,29 +45,31 @@ export function generateTransformerFile(envInit?: { [k: string]: any }): TResult
     development: function(env) {
       return {
         ...env,
-        // Update vars as desired for development environment
+        // Update vars for development environment
       }
     },
     
     staging: function(env) {
       return {
         ...env,
-        // Update vars as desired for staging environment
+        // Update vars for staging environment
       }
     },
     
     production: function(env) {
       return {
         ...env,
-        // Update vars as desired for production environment
+        // Update vars for production environment
       }
     },
-    
+  
     /*
      Add other transformer targets as needed.
      */
   }
-};`;
+};
+module.exports = altenvConfig;
+`;
     Fs.writeFileSync(filepath, contents);
     result.success = true;
   } catch (e) {

@@ -4,3 +4,5 @@ lib
 .idea
 dist
 build
+.env
+altenv.js

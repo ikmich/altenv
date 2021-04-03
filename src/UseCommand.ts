@@ -1,11 +1,9 @@
-import { BaseCmd } from 'cliyargs/lib/BaseCmd';
 import { altenvUtil } from './util/altenv-util';
 import { conprint } from 'cliyargs/lib/utils';
-import { ALTENV_FILENAME } from './index';
-import { dotEnv } from './util/dot-env';
-import { Fs } from './deps';
+import { ALTENV_FILENAME, IOptions } from './index';
+import { ClyBaseCommand } from '../../cliyargs';
 
-export class UseCommand extends BaseCmd {
+export class UseCommand extends ClyBaseCommand<IOptions> {
   async run() {
     await super.run();
 
@@ -21,7 +19,7 @@ export class UseCommand extends BaseCmd {
       return conprint.error(`No target specified. Usage: \`altenv use <target>\``);
     }
 
-    const config = altenvUtil.getObject();
+    const config = altenvUtil.getConfig();
     if (!config) {
       return conprint.error(`Error reading altenv config`);
     }
@@ -33,38 +31,6 @@ export class UseCommand extends BaseCmd {
       return conprint.error(msgBuilder.join(''));
     }
 
-    function altenv() {
-      let env = Object.assign({}, config.defaultEnv);
-      const keys = Object.keys(config.transformers);
-      if (target && keys.includes(target)) {
-        env = config.transformers[target](env);
-      }
-
-      // Write env file
-      try {
-        let output = '';
-        Object.keys(env).forEach((k) => {
-          const v = env[k];
-          if (typeof v === 'string') {
-            output += `${k}="${v}"\n`;
-          } else {
-            output += `${k}=${v}\n`;
-          }
-        });
-
-        const filepath = dotEnv.getFilePath();
-        if (!filepath) {
-          dotEnv.createDotEnv();
-        }
-
-        Fs.writeFileSync(dotEnv.getFilePath()!, output, 'utf-8');
-        conprint.success(`.env has been updated for target '${target}'`);
-      } catch (e) {
-        conprint.error('Error writing env file');
-        console.error(e);
-      }
-    }
-
-    altenv();
+    altenvUtil.writeToEnv(target);
   }
 }

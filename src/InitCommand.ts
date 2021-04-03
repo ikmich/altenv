@@ -1,23 +1,19 @@
-import { BaseCmd } from 'cliyargs/lib/BaseCmd';
 import { dotEnv } from './util/dot-env';
 import { generateTransformerFile } from './helpers/generateTransformerFile';
-import { conprint, isYesInput } from 'cliyargs/lib/utils';
-import { cliyargs } from 'cliyargs';
+import { IOptions } from './index';
+import { cliyargs, ClyBaseCommand } from '../../cliyargs';
+import { conprint, isYesInput } from '../../cliyargs/lib/utils';
+import { altenvUtil } from './util/altenv-util';
 
-export class InitCommand extends BaseCmd {
+export class InitCommand extends ClyBaseCommand<IOptions> {
   async run(): Promise<void> {
     await super.run();
 
-    /*
-     - Read and parse .env file if exists
-     - Create altenv.js file; initialize with data from .env file if exists
-     */
-
-    let filePath = dotEnv.getFilePath();
-    if (filePath && filePath.length > 0) {
+    let envFilepath = dotEnv.getFilePath();
+    if (envFilepath && envFilepath.length > 0) {
       const input = await cliyargs.askInput(
         'ask_replace_dotenv',
-        `${filePath} already exists. Would you like to replace it? (y/n)`
+        `${envFilepath} already exists. Would you like to replace it? (y/n)`
       );
       if (!isYesInput(input)) {
         conprint.notice('Ignoring...');
@@ -25,15 +21,22 @@ export class InitCommand extends BaseCmd {
       }
     } else {
       // If no .env file, create it.
-      dotEnv.createDotEnv();
+      envFilepath = dotEnv.createDotEnv();
     }
 
-    const envInit = dotEnv.parse();
-    let result = generateTransformerFile(envInit);
-    if (result.success) {
-      conprint.success(`${filePath} created`);
+    if (!altenvUtil.hasAltenvFile()) {
+      const envInit = dotEnv.parse();
+      let result = generateTransformerFile(envInit);
+      if (result.success) {
+        conprint.success(`${envFilepath} created`);
+      }
+    } else {
+      /*
+       * altenv config file exists
+       * assume it has configurations in it already
+       * use the defaultEnv to write to the env file
+       */
+      altenvUtil.writeToEnv('default');
     }
-
-    //console.log(envInit);
   }
 }

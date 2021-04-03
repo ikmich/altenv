@@ -15,6 +15,7 @@ export const dotEnv = {
     if (!Fs.existsSync(filepath)) {
       Fs.createFileSync(filepath);
     }
+    return filepath;
   },
 
   getContents() {

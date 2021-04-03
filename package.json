@@ -1,6 +1,6 @@
 {
   "name": "altenv",
-  "version": "0.0.1-alpha",
+  "version": "0.0.1-beta",
   "description": "Alternate your env vars according to preferred target runtime environment",
   "main": "lib/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/fs-extra": "^9.0.7",
-    "cliyargs": "^1.0.1",
+    "cliyargs": "2.0.0",
     "fs-extra": "^9.1.0"
   },
   "devDependencies": {
