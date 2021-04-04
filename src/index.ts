@@ -2,6 +2,7 @@
 import { InitCommand } from './InitCommand';
 import { UseCommand } from './UseCommand';
 import { cliyargs, IClyCommandInfo, IClyCommandOpts } from '../../cliyargs';
+import LsCommand from './LsCommand';
 
 export const ALTENV_FILENAME = 'altenv.js';
 
@@ -29,6 +30,7 @@ export interface IOptions extends IClyCommandOpts {
 const argv = cliyargs.yargs
   .command('init', 'Create config file')
   .command('use', 'Apply the specified env transformer')
+  .command('ls', 'List defined targets')
   .option('print', {
     alias: 'p',
     type: 'boolean',
@@ -45,6 +47,9 @@ cliyargs.processCommand(commandInfo, async (commandName: string) => {
       break;
     case 'use':
       await new UseCommand(commandInfo).run();
+      break;
+    case 'ls':
+      await new LsCommand(commandInfo).run();
       break;
     default:
     // No command. Check options
