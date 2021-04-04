@@ -1,10 +1,11 @@
 # Intro
-Alternate your env vars according to preferred target runtime environment or otherwise.  
+Change up your environment variables according to your preferred target runtime environment or otherwise.  
 
 ### Install
 ```shell
 # with npm
 npm install -g altenv
+
 # or with yarn
 yarn global add altenv
 ```
