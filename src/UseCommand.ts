@@ -19,6 +19,8 @@ export class UseCommand extends ClyBaseCommand<IOptions> {
       return conprint.error(`No target specified. Usage: \`altenv use <target>\``);
     }
 
+    const shouldPrint: boolean = this.options.print;
+
     const config = altenvUtil.getConfig();
     if (!config) {
       return conprint.error(`Error reading altenv config`);
@@ -31,6 +33,9 @@ export class UseCommand extends ClyBaseCommand<IOptions> {
       return conprint.error(msgBuilder.join(''));
     }
 
-    altenvUtil.writeToEnv(target);
+    const envOutput = altenvUtil.writeToEnv(target);
+    if (shouldPrint && envOutput && envOutput.length > 0) {
+      console.log(envOutput);
+    }
   }
 }

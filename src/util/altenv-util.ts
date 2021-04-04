@@ -59,9 +59,12 @@ export const altenvUtil = {
       Fs.writeFileSync(filepath!, envOutput, 'utf-8');
 
       conprint.success(`.env has been updated for target '${target}'`);
+
+      return envOutput;
     } catch (e) {
       conprint.error('Error writing env file');
       console.error(e);
+      return '';
     }
   }
 };

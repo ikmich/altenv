@@ -29,6 +29,11 @@ export interface IOptions extends IClyCommandOpts {
 const argv = cliyargs.yargs
   .command('init', 'Create config file')
   .command('use', 'Apply the specified env transformer')
+  .option('print', {
+    alias: 'p',
+    type: 'boolean',
+    description: 'Print generated env output'
+  })
   .help().argv;
 
 const commandInfo: IClyCommandInfo<IOptions> = cliyargs.parseYargv(argv);
