@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { InitCommand } from './InitCommand';
 import { UseCommand } from './UseCommand';
-import { cliyargs, IClyCommandInfo, IClyCommandOpts } from '../../cliyargs';
 import LsCommand from './LsCommand';
+import { cliyargs, IClyCommandInfo, IClyCommandOpts } from 'cliyargs';
 
 export const ALTENV_FILENAME = 'altenv.js';
 

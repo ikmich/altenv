@@ -1,7 +1,7 @@
 import { altenvUtil } from './util/altenv-util';
 import { conprint } from 'cliyargs/lib/utils';
 import { ALTENV_FILENAME, IOptions } from './index';
-import { ClyBaseCommand } from '../../cliyargs';
+import { ClyBaseCommand } from 'cliyargs';
 
 export class UseCommand extends ClyBaseCommand<IOptions> {
   async run() {

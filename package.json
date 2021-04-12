@@ -1,19 +1,19 @@
 {
   "name": "altenv",
-  "version": "1.0.0-beta",
+  "version": "1.0.1-beta",
   "description": "Alternate your env vars according to preferred target runtime environment",
   "main": "lib/index.js",
   "scripts": {
     "build": "rm -rf lib && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "depl": "cross-env NODE_ENV=development npm uninstall -g altenv && yarn build && npm install -g",
-    "prepublishOnly": "yarn build"
+    "depl": "cross-env NODE_ENV=development npm uninstall -g altenv && npm run build && npm install -g",
+    "prepublishOnly": "npm run build"
   },
   "author": "Ikenna Agbasimalo <michfx@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@types/fs-extra": "^9.0.7",
-    "cliyargs": "2.0.0",
+    "cliyargs": "^2.0.0",
     "fs-extra": "^9.1.0"
   },
   "devDependencies": {
