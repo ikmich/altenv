@@ -35,7 +35,7 @@ export class UseCommand extends ClyBaseCommand<IOptions> {
 
     const envOutput = altenvUtil.writeToEnv(target);
     if (shouldPrint && envOutput && envOutput.length > 0) {
-      console.log(envOutput);
+      conprint.info(envOutput);
     }
   }
 }

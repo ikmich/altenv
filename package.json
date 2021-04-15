@@ -1,6 +1,6 @@
 {
   "name": "altenv",
-  "version": "1.0.1-beta",
+  "version": "1.0.2-beta",
   "description": "Alternate your env vars according to preferred target runtime environment",
   "main": "lib/index.js",
   "scripts": {

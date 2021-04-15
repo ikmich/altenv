@@ -23,7 +23,7 @@ export function generateTransformerFile(envInit?: { [k: string]: any }): TResult
 /**
  * [altenv config]{@link https://github.com/ikmich/altenv}
  */
-var altenvConfig = {
+const altenvConfig = {
   defaultEnv: ${defaultEnvStr},
   
   /**

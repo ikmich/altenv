@@ -55,3 +55,8 @@ cliyargs.processCommand(commandInfo, async (commandName: string) => {
     // No command. Check options
   }
 });
+
+export const defaultConfig: AltenvConfig = {
+  defaultEnv: {},
+  transformers: {}
+};

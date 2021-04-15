@@ -9,11 +9,11 @@ export class InitCommand extends ClyBaseCommand<IOptions> {
   async run(): Promise<void> {
     await super.run();
 
-    let envFilepath = dotEnv.getFilePath();
+    const envFilepath = dotEnv.getFilePath();
     const hasEnvFile = envFilepath && envFilepath.length > 0;
     if (!hasEnvFile) {
       // If no .env file, create it.
-      envFilepath = dotEnv.createDotEnv();
+      dotEnv.createDotEnv();
       console.log('.env file created');
     }
 
@@ -22,7 +22,9 @@ export class InitCommand extends ClyBaseCommand<IOptions> {
       const envInit = dotEnv.parse();
       let result = generateTransformerFile(envInit);
       if (result.success) {
-        conprint.success(`${envFilepath} created`);
+        conprint.success(`${altenvUtil.getFilePath()} created`);
+      } else {
+        conprint.error('There was an error when generating the altenv config file');
       }
     } else {
       conprint.notice(`${altenvUtil.getFilePath()} already exists.`);

@@ -1,7 +1,6 @@
 import { Fs, Path } from '../deps';
 import { fileUtil } from './file-util';
-import { ALTENV_FILENAME, AltenvConfig } from '../index';
-import { defaultConfig } from './index';
+import { ALTENV_FILENAME, AltenvConfig, defaultConfig } from '../index';
 import { dotEnv } from './dot-env';
 import { conprint } from 'cliyargs/lib/utils';
 
@@ -26,10 +25,14 @@ export const altenvUtil = {
   },
 
   hasAltenvFile(): boolean {
-    const filePath = this.getFilePath() ?? '';
+    const filePath = this.getFilePath();
     return !!filePath && filePath.length > 0;
   },
 
+  /**
+   * Write to .env file using properties defined in the specified target function.
+   * @param target
+   */
   writeToEnv(target: string) {
     const config = this.getConfig();
 
@@ -51,12 +54,12 @@ export const altenvUtil = {
         }
       });
 
-      const filepath = dotEnv.getFilePath();
-      if (!filepath) {
-        dotEnv.createDotEnv();
+      let envFilePath = dotEnv.getFilePath();
+      if (!envFilePath) {
+        envFilePath = dotEnv.createDotEnv();
       }
 
-      Fs.writeFileSync(filepath!, envOutput, 'utf-8');
+      Fs.writeFileSync(envFilePath, envOutput, 'utf-8');
 
       conprint.success(`.env has been updated for target '${target}'`);
 

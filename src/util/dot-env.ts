@@ -29,56 +29,59 @@ export const dotEnv = {
   parse(): object {
     let result: any = {};
     let contents = this.getContents();
-    if (contents) {
-      let lines: string[] = contents.split(/\n|\r|\r\n/);
-      if (Array.isArray(lines)) {
-        for (let line of lines) {
-          const matches = line.match(/(\w+)=(.*)/);
-          // console.log({matches});
-          if (!matches || !matches[1]) {
-            // No key, so ignore that line.
-            continue;
+    if (!contents) {
+      return result;
+    }
+
+    let lines: string[] = contents.split(/\n|\r|\r\n/);
+    if (!Array.isArray(lines)) {
+      return result;
+    }
+
+    for (let line of lines) {
+      const matches = line.match(/(\w+)=(.*)/);
+      if (!matches || !matches[1]) {
+        continue;
+      }
+
+      let k = matches[1];
+      let v = matches[2] ?? '';
+
+      if (k && k.length > 0) {
+        let isNumber = false;
+        let isBoolean = false;
+        let val: any = v;
+        if (v && v.length > 0) {
+          let isSingleQuoted = v.startsWith("'") && v.endsWith("'");
+          let isDoubleQuoted = v.startsWith('"') && v.endsWith('"');
+          let quoted = isSingleQuoted || isDoubleQuoted;
+
+          if (!quoted) {
+            isBoolean = v === 'true' || v === 'false';
+            if (!isBoolean) {
+              isNumber = !isNaN(Number(v));
+            }
           }
 
-          let k = matches[1];
-          let v = matches[2] ?? '';
+          /*
+           Remove the quotes, since value is going into a js object literal, which assigns a string to
+           the value by default.
+           */
+          v = v.replace(/^['"]/, '').replace(/['"]$/, '');
 
-          if (k && k.length > 0) {
-            let isNumber = false;
-            let isBoolean = false;
-            let val: any = v;
-            if (v && v.length > 0) {
-              let isSingleQuoted = v.startsWith("'") && v.endsWith("'");
-              let isDoubleQuoted = v.startsWith('"') && v.endsWith('"');
-              let quoted = isSingleQuoted || isDoubleQuoted;
-
-              if (!quoted) {
-                isBoolean = v === 'true' || v === 'false';
-                if (!isBoolean) {
-                  isNumber = !isNaN(Number(v));
-                }
-              }
-
-              /*
-               Remove the quotes, since value is going into a js object literal, which assigns a string to
-               the value by default.
-               */
-              v = v.replace(/^['"]/, '').replace(/['"]$/, '');
-
-              if (isNumber) {
-                val = Number(v);
-              } else if (isBoolean) {
-                val = Boolean(v);
-              } else {
-                val = v;
-              }
-            }
-
-            result[k] = val;
+          if (isNumber) {
+            val = Number(v);
+          } else if (isBoolean) {
+            val = Boolean(v);
+          } else {
+            val = v;
           }
         }
+
+        result[k] = val;
       }
     }
+
 
     return result;
   }
