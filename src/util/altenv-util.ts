@@ -42,6 +42,9 @@ export const altenvUtil = {
       env = config.transformers[target](env);
     }
 
+    // Save the selected target in the env file
+    env['ALTENV_TARGET'] = target;
+
     // Write env file
     try {
       let envOutput = '';

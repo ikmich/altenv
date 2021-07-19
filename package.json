@@ -1,11 +1,10 @@
 {
   "name": "altenv",
-  "version": "1.0.2-beta",
-  "description": "Alternate your env vars according to preferred target runtime environment",
+  "version": "1.0.0",
+  "description": "Alternate your .env file environment variables according to your preferred target runtime environment",
   "main": "lib/index.js",
   "scripts": {
     "build": "rm -rf lib && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "depl": "cross-env NODE_ENV=development npm uninstall -g altenv && npm run build && npm install -g",
     "prepublishOnly": "npm run build"
   },
