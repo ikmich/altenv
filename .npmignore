@@ -4,3 +4,4 @@ dev/
 src/
 *.log
 docs/
+altenv.js
