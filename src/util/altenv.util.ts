@@ -1,6 +1,13 @@
 import { Fs, Path } from '../deps';
 import { fileUtil } from './file.util';
-import { DIRECTIVE_NON_VALUE_PREFIX, ALTENV_FILENAME, AltenvConfig, defaultConfig } from '../index';
+import {
+  DIRECTIVE_NON_VALUE_PREFIX,
+  ALTENV_FILENAME,
+  AltenvConfig,
+  defaultConfig,
+  COMMENT_DIRECTIVE,
+  EMPTY_LINE_DIRECTIVE
+} from '../index';
 import { envFileUtil } from './env-file.util';
 import { conprint } from 'cliyargs/lib/utils';
 
@@ -55,17 +62,17 @@ export const altenvUtil = {
 
         if (k.startsWith(DIRECTIVE_NON_VALUE_PREFIX)) {
           // Ignore altenv directive keys.
-          envOutput += `${v}\n`;
+          if (k.startsWith(COMMENT_DIRECTIVE)) {
+            envOutput += `${v}\n`;
+          } else if (k.startsWith(EMPTY_LINE_DIRECTIVE)) {
+            envOutput += `\n`;
+          }
         } else if (typeof v === 'string') {
           envOutput += `${k}="${v}"\n`;
         } else {
           envOutput += `${k}=${v}\n`;
         }
       }
-
-      // Object.keys(env).forEach((k) => {
-      //
-      // });
 
       let envFilePath = envFileUtil.getFilePath();
       if (!envFilePath) {

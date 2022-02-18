@@ -6,6 +6,9 @@ import { cliyargs, IClyCommandInfo, IClyCommandOpts } from 'cliyargs';
 
 export const ALTENV_FILENAME = 'altenv.js';
 export const DIRECTIVE_NON_VALUE_PREFIX = '##_';
+export const COMMENT_DIRECTIVE = `${DIRECTIVE_NON_VALUE_PREFIX}COMMENT_LINE_`;
+export const EMPTY_LINE_DIRECTIVE = `${DIRECTIVE_NON_VALUE_PREFIX}EMPTY_LINE_`;
+
 
 export type TResult = {
   success: boolean;

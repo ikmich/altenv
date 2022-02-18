@@ -1,6 +1,6 @@
 import { Fs, Path } from '../deps';
 import { fileUtil } from './file.util';
-import { DIRECTIVE_NON_VALUE_PREFIX, IEnv } from '../index';
+import { COMMENT_DIRECTIVE, EMPTY_LINE_DIRECTIVE, IEnv } from '../index';
 
 export const envFileUtil = {
   getFilePath(): string | null {
@@ -74,10 +74,10 @@ export const envFileUtil = {
       ++lineNo;
       token = token.trim();
       if (!token.length) {
-        key = `${DIRECTIVE_NON_VALUE_PREFIX}EMPTY_LINE_${lineNo}`;
+        key = `${EMPTY_LINE_DIRECTIVE}${lineNo}`;
         value = token;
       } else if (token.startsWith('#')) {
-        key = `${DIRECTIVE_NON_VALUE_PREFIX}COMMENT_LINE_${lineNo}`;
+        key = `${COMMENT_DIRECTIVE}${lineNo}`;
         value = token;
       } else {
         const kv = token.split('=');
