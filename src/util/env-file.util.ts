@@ -1,6 +1,7 @@
 import { Fs, Path } from '../deps';
 import { fileUtil } from './file.util';
 import { COMMENT_DIRECTIVE, EMPTY_LINE_DIRECTIVE, IEnv } from '../index';
+import { isNumeric } from './index';
 
 export const envFileUtil = {
   getFilePath(): string | null {
@@ -67,7 +68,7 @@ export const envFileUtil = {
     }
 
     let key = '';
-    let value = '';
+    let value:any = '';
     const env: IEnv = {};
     let lineNo = 0;
     for (let token of tokens) {
@@ -83,9 +84,10 @@ export const envFileUtil = {
         const kv = token.split('=');
         key = kv[0];
         value = kv[1];
-        if (value) {
-          value = value.replace(/^"+|"+$/g, '');
-        }
+      }
+
+      if (isNumeric(value)) {
+        value = Number(value);
       }
       env[key] = value;
     }

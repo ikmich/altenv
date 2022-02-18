@@ -1,11 +1,11 @@
 import { Fs, Path } from '../deps';
 import { fileUtil } from './file.util';
 import {
-  DIRECTIVE_NON_VALUE_PREFIX,
   ALTENV_FILENAME,
   AltenvConfig,
-  defaultConfig,
   COMMENT_DIRECTIVE,
+  defaultConfig,
+  DIRECTIVE_NON_VALUE_PREFIX,
   EMPTY_LINE_DIRECTIVE
 } from '../index';
 import { envFileUtil } from './env-file.util';
@@ -67,8 +67,6 @@ export const altenvUtil = {
           } else if (k.startsWith(EMPTY_LINE_DIRECTIVE)) {
             envOutput += `\n`;
           }
-        } else if (typeof v === 'string') {
-          envOutput += `${k}="${v}"\n`;
         } else {
           envOutput += `${k}=${v}\n`;
         }
