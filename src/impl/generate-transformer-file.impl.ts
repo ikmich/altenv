@@ -1,5 +1,5 @@
 import { Fs } from '../deps';
-import { fileUtil } from '../util/file-util';
+import { fileUtil } from '../util/file.util';
 import { _fn } from '../util';
 import { TResult } from '../index';
 
@@ -27,7 +27,7 @@ const altenvConfig = {
   defaultEnv: ${defaultEnvStr},
   
   /**
-   * Defines functions corresponding to each target environment for which environment variables should be set. The
+   * Defines functions corresponding to each target for which environment variables should be set. The
    * existing/default environment variables will be passed as an object argument to each transformer function to be 
    * edited or extended as desired. The transformer function returns an object representing the updated environment 
    * variables that will be used to generate a new '.env' file.
@@ -35,7 +35,7 @@ const altenvConfig = {
    * It is recommended to name the transformer functions according to the target environment (mainly for readability 
    * and context), but it is up to the developer to decide how the functions are named. The important thing to note is 
    * that the name of the function should be the same as the argument passed to the \`altenv\` command. 
-   * E.g \`altenv staging\` will execute the transformer function named 'staging'.
+   * E.g \`altenv docker\` will execute the transformer function named 'docker'.
    */
   transformers: {
     default: function(env) {
@@ -45,26 +45,26 @@ const altenvConfig = {
     development: function(env) {
       return {
         ...env,
-        // Update vars for development environment
+        // Update vars for 'development'
       }
     },
     
-    staging: function(env) {
+    docker: function(env) {
       return {
         ...env,
-        // Update vars for staging environment
+        // Update vars for 'docker'
       }
     },
     
-    production: function(env) {
+    local: function(env) {
       return {
         ...env,
-        // Update vars for production environment
+        // Update vars for 'local'
       }
     },
   
     /*
-     Add other transformer targets as needed.
+     * Add other transformers as needed.
      */
   }
 };

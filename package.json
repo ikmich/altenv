@@ -1,11 +1,11 @@
 {
   "name": "altenv",
-  "version": "1.0.0",
-  "description": "Alternate your .env file environment variables according to your preferred target runtime environment",
-  "main": "lib/index.js",
+  "version": "1.1.0",
+  "description": "Alternate and manage environment variables for different environments.",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "rm -rf lib && tsc",
-    "depl": "cross-env NODE_ENV=development npm uninstall -g altenv && npm run build && npm install -g",
+    "build": "rm -rf dist && tsc",
+    "depl": "cross-env NODE_ENV=development depl.sh",
     "prepublishOnly": "npm run build"
   },
   "author": "Ikenna Agbasimalo <michfx@gmail.com>",
@@ -16,10 +16,11 @@
     "fs-extra": "^9.1.0"
   },
   "devDependencies": {
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "ts-node": "^10.5.0"
   },
   "bin": {
-    "altenv": "lib/index.js"
+    "altenv": "dist/index.js"
   },
   "bugs": {
     "email": "michfx@gmail.com",

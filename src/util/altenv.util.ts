@@ -1,7 +1,7 @@
 import { Fs, Path } from '../deps';
-import { fileUtil } from './file-util';
-import { ALTENV_FILENAME, AltenvConfig, defaultConfig } from '../index';
-import { dotEnv } from './dot-env';
+import { fileUtil } from './file.util';
+import { DIRECTIVE_NON_VALUE_PREFIX, ALTENV_FILENAME, AltenvConfig, defaultConfig } from '../index';
+import { envFileUtil } from './env-file.util';
 import { conprint } from 'cliyargs/lib/utils';
 
 export const altenvUtil = {
@@ -43,23 +43,33 @@ export const altenvUtil = {
     }
 
     // Save the selected target in the env file
-    env['ALTENV_TARGET'] = target;
+    let KEY_ALTENV_TARGET = `ALTENV_TARGET`;
+    env[KEY_ALTENV_TARGET] = target;
 
     // Write env file
     try {
       let envOutput = '';
-      Object.keys(env).forEach((k) => {
+      let keys = Object.keys(env);
+      for (let k of keys) {
         const v = env[k];
-        if (typeof v === 'string') {
+
+        if (k.startsWith(DIRECTIVE_NON_VALUE_PREFIX)) {
+          // Ignore altenv directive keys.
+          envOutput += `${v}\n`;
+        } else if (typeof v === 'string') {
           envOutput += `${k}="${v}"\n`;
         } else {
           envOutput += `${k}=${v}\n`;
         }
-      });
+      }
 
-      let envFilePath = dotEnv.getFilePath();
+      // Object.keys(env).forEach((k) => {
+      //
+      // });
+
+      let envFilePath = envFileUtil.getFilePath();
       if (!envFilePath) {
-        envFilePath = dotEnv.createDotEnv();
+        envFilePath = envFileUtil.createEnvFile();
       }
 
       Fs.writeFileSync(envFilePath, envOutput, 'utf-8');

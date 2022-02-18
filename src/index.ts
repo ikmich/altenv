@@ -5,6 +5,7 @@ import LsCommand from './LsCommand';
 import { cliyargs, IClyCommandInfo, IClyCommandOpts } from 'cliyargs';
 
 export const ALTENV_FILENAME = 'altenv.js';
+export const DIRECTIVE_NON_VALUE_PREFIX = '##_';
 
 export type TResult = {
   success: boolean;
@@ -31,11 +32,6 @@ const argv = cliyargs.yargs
   .command('init', 'Create config file')
   .command('use', 'Apply the specified env transformer')
   .command('ls', 'List defined targets')
-  .option('print', {
-    alias: 'p',
-    type: 'boolean',
-    description: 'Print generated env output'
-  })
   .help().argv;
 
 const commandInfo: IClyCommandInfo<IOptions> = cliyargs.parseYargv(argv);

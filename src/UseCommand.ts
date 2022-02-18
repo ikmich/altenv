@@ -1,4 +1,4 @@
-import { altenvUtil } from './util/altenv-util';
+import { altenvUtil } from './util/altenv.util';
 import { conprint } from 'cliyargs/lib/utils';
 import { ALTENV_FILENAME, IOptions } from './index';
 import { ClyBaseCommand } from 'cliyargs';

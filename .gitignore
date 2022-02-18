@@ -1,8 +1,8 @@
 node_modules
-lib
+dist
 .vscode
 .idea
-dist
 build
 .env
 altenv.js
+.dev

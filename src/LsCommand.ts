@@ -1,6 +1,6 @@
 import { IOptions } from './index';
 import { ClyBaseCommand } from 'cliyargs';
-import { altenvUtil } from './util/altenv-util';
+import { altenvUtil } from './util/altenv.util';
 
 class LsCommand extends ClyBaseCommand<IOptions> {
   async run() {
