@@ -1,6 +1,6 @@
 import { Fs } from '../deps';
 import { fileUtil } from '../util/file.util';
-import { _fn } from '../util';
+import { _fn } from '../util/util.index';
 import { TResult } from '../index';
 
 export function generateTransformerFile(envInit?: { [k: string]: any }): TResult {
@@ -53,13 +53,6 @@ const altenvConfig = {
       return {
         ...env,
         // Update vars for 'docker'
-      }
-    },
-    
-    local: function(env) {
-      return {
-        ...env,
-        // Update vars for 'local'
       }
     },
   

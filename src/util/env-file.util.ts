@@ -1,7 +1,7 @@
 import { Fs, Path } from '../deps';
 import { fileUtil } from './file.util';
 import { COMMENT_DIRECTIVE, EMPTY_LINE_DIRECTIVE, IEnv } from '../index';
-import { isNumeric } from './index';
+import { isNumeric } from './util.index';
 
 export const envFileUtil = {
   getFilePath(): string | null {
